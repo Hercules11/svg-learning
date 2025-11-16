@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			div {
+				border: solid 2px gray;
+			}
+			svg {
+				background-color: #eeeeee;
+				margin: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<svg
+				width="200px"
+				height="200px"
+				viewBox="0 0 200 200"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<g id="square">
+					<rect
+						x="0"
+						y="0"
+						width="20"
+						height="20"
+						style="fill: black; stroke-width: 2"
+					/>
+				</g>
+				，x和
+				<!-- y 相当于属性transform="translate(x-value, y-value)" -->
+				<use xlink:href="#square" x="50" y="50" />
+			</svg>
+		</div>
+		<div>
+			<svg
+				width="200px"
+				height="200px"
+				viewBox="0 0 200 200"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<g id="square">
+					<rect
+						x="0"
+						y="0"
+						width="20"
+						height="20"
+						style="fill: none; stroke: black; stroke-width: 2"
+					/>
+				</g>
+				<!-- 读取了页面内第一个匹配的 id 元素 -->
+				<!-- 变换永远不会改变图形对象的网格坐标，但是它会改变网格在画布上的位置。也就是说，不改变图像坐标而是该整个网格在画布上的位置 -->
+				<use xlink:href="#square" transform="translate(50,50)" />
+			</svg>
+		</div>
+		<div>
+			<svg
+				width="200px"
+				height="200px"
+				viewBox="0 0 200 200"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<g id="square">
+					<rect
+						x="10"
+						y="10"
+						width="20"
+						height="20"
+						style="fill: none; stroke: black"
+					/>
+				</g>
+				<use xlink:href="#square" transform="scale(2)" />
+			</svg>
+			<!-- 缩放变换永远不会改变图形对象的网格坐标或者它的笔画宽度，但是，它会改变对应画布上的坐标系统（网格）的大小 -->
+		</div>
+	</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			div {
+				border: solid 2px gray;
+			}
+			svg {
+				background-color: #eeeeee;
+				margin: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<svg
+				width="200px"
+				height="200px"
+				viewBox="0 0 200 200"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<defs>
+					<style type="text/css">
+						<![CDATA[
+						    circle {
+						        fill: #ffc;
+						        stroke: blue;
+						        stroke-width: 2;
+						        stroke-dasharray: 5 3;
+						    }
+						]]>
+					</style>
+				</defs>
+				<circle cx="20" cy="20" r="10" />
+				<circle cx="60" cy="20" r="15" />
+				<circle cx="20" cy="60" r="10" style="fill: #cfc" />
+				<circle
+					cx="60"
+					cy="60"
+					r="15"
+					style="stroke-width: 1; stroke-dasharray: none"
+				/>
+			</svg>
+			<!-- 样式优先级：：内联样式 》 内部样式表 》外部样式表 》表现属性 -->
+		</div>
+		<div>
+			<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+				<defs>
+					<style type="text/css">
+						<![CDATA[
+						      circle { fill: red; }
+						    ]]>
+					</style>
+				</defs>
+				<circle cx="20" cy="20" r="15" fill="green" />
+			</svg>
+		</div>
+	</body>
+</html>

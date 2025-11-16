@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>甲板视图核心 Demo</title>
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+		/>
+		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"
+		/>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
+		<style>
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+			}
+			/* 关键：必须为地图容器指定一个高度 */
+			#map {
+				width: 100vw; /* 占满视窗宽度 */
+				height: 100vh; /* 占满视窗高度 */
+				background-color: #333; /* 地图背景色 */
+			}
+			/* 我们的自定义工具栏 */
+			.toolbar {
+				position: absolute;
+				top: 10px;
+				left: 50px; /* Leaflet 默认缩放按钮在左侧 */
+				z-index: 1000; /* 确保在地图上层 */
+				background: white;
+				padding: 5px;
+				border-radius: 4px;
+				border: 1px solid #ccc;
+			}
+			.toolbar button {
+				margin: 2px;
+				padding: 5px 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="toolbar">
+			<button id="drawPolygon">激活: 绘制危险区</button>
+			<button id="addDevice">激活: 添加设备</button>
+			<hr />
+			<button id="editLayers">激活: 编辑/移动</button>
+			<button id="saveChanges">保存更改</button>
+			<button id="cancelEditing" style="display: none">取消编辑</button>
+		</div>
+
+		<div id="map"></div>
+		<script>
+			// --- 1. 初始化地图 (和之前一样) ---
+			const imgWidth = 1200;
+			const imgHeight = 800;
+
+			const map = L.map("map", {
+				crs: L.CRS.Simple,
+				minZoom: -2,
+				maxZoom: 2,
+			});
+
+			const bounds = [
+				[0, 0],
+				[imgHeight, imgWidth],
+			];
+			const image = L.imageOverlay("deck-plan.svg", bounds).addTo(map);
+			map.fitBounds(bounds);
+
+			// --- 2. 核心: 设置 Leaflet.draw ---
+
+			// (1) 创建一个 "FeatureGroup" 来存储所有可编辑的图层
+			// 这是 Leaflet.draw 的要求
+			const editableLayers = new L.FeatureGroup();
+			map.addLayer(editableLayers);
+
+			// (2) 初始化绘制和编辑的 "处理器" (Handlers)
+			// 我们不使用默认工具栏，而是手动创建处理器
+			const drawOptions = {
+				polygon: {
+					shapeOptions: {
+						color: "#f03",
+						fillOpacity: 0.4,
+					},
+					allowIntersection: false,
+					showArea: true,
+				},
+				marker: {
+					// (可选) 在这里指定您的自定义设备图标
+					// icon: deviceIcon
+				},
+			};
+
+			const polygonDrawer = new L.Draw.Polygon(map, drawOptions.polygon);
+			const markerDrawer = new L.Draw.Marker(map, drawOptions.marker);
+
+			// 编辑处理器需要知道它要编辑哪个图层组
+			const editHandler = new L.EditToolbar.Edit(map, {
+				featureGroup: editableLayers,
+				// (可选) 禁用删除功能
+				// remove: false
+			});
+
+			// --- 3. 绑定按钮事件 ---
+
+			document.getElementById("drawPolygon").onclick = () => {
+				polygonDrawer.enable(); // 激活多边形绘制
+			};
+
+			document.getElementById("addDevice").onclick = () => {
+				markerDrawer.enable(); // 激活标记绘制
+			};
+
+			const editButton = document.getElementById("editLayers");
+			const saveButton = document.getElementById("saveChanges");
+			const cancelButton = document.getElementById("cancelEditing");
+
+			editButton.onclick = () => {
+				editHandler.enable(); // 激活编辑模式
+				editButton.style.display = "none";
+				saveButton.style.display = "inline-block";
+				cancelButton.style.display = "inline-block";
+			};
+
+			saveButton.onclick = () => {
+				editHandler.save(); // 保存更改
+				editHandler.disable();
+				editButton.style.display = "inline-block";
+				saveButton.style.display = "none";
+				cancelButton.style.display = "none";
+			};
+
+			cancelButton.onclick = () => {
+				editHandler.revertLayers(); // 撤销更改
+				editHandler.disable();
+				editButton.style.display = "inline-block";
+				saveButton.style.display = "none";
+				cancelButton.style.display = "none";
+			};
+
+			// --- 4. 监听 Leaflet.draw 事件 ---
+
+			// (1) 监听 "创建" 事件 (当一个形状绘制完成时)
+			map.on(L.Draw.Event.CREATED, (event) => {
+				const layer = event.layer;
+
+				// 将新绘制的图层添加到我们的可编辑组中
+				editableLayers.addLayer(layer);
+
+				// (可选) 为新图层添加弹窗
+				if (layer instanceof L.Marker) {
+					layer.bindPopup("新设备 (点击编辑以移动)");
+				} else if (layer instanceof L.Polygon) {
+					layer.bindPopup("新危险区 (点击编辑以调整)");
+				}
+
+				// --- 关键: 获取数据以发送到后端 ---
+				const geoJsonData = layer.toGeoJSON();
+				console.log("新创建的图层 (GeoJSON):", JSON.stringify(geoJsonData));
+				// 在这里，您可以立即调用一个 API 将这个 geoJsonData POST 到您的 Node.js 服务器
+				// fetch('/api/deck/features', { method: 'POST', body: JSON.stringify(geoJsonData) });
+			});
+
+			// (2) 监听 "编辑" 事件 (当一个或多个图层被修改后点击 "保存" 时)
+			map.on(L.Draw.Event.EDITED, (event) => {
+				const layers = event.layers; // layers 是一个 LayerGroup
+
+				// --- 关键: 获取被修改的数据以发送到后端 ---
+				const editedGeoJsonData = layers.toGeoJSON();
+				console.log(
+					"被编辑的图层 (GeoJSON):",
+					JSON.stringify(editedGeoJsonData)
+				);
+
+				// 在这里，您遍历被修改的图层并发起 PUT/PATCH 请求
+				layers.eachLayer((layer) => {
+					// 您需要一种方式来识别这个图层 (例如，在加载时给它绑定一个 _myDbId)
+					// const id = layer._myDbId;
+					// const data = layer.toGeoJSON();
+					// fetch(`/api/deck/features/${id}`, { method: 'PUT', body: JSON.stringify(data) });
+					console.log("图层被修改:", layer);
+				});
+			});
+
+			// (3) 监听 "删除" 事件 (如果启用了删除功能)
+			map.on(L.Draw.Event.DELETED, (event) => {
+				const layers = event.layers;
+				console.log("被删除的图层:", layers);
+
+				// 在这里发起 DELETE 请求
+				layers.eachLayer((layer) => {
+					// const id = layer._myDbId;
+					// fetch(`/api/deck/features/${id}`, { method: 'DELETE' });
+				});
+			});
+		</script>
+	</body>
+</html>

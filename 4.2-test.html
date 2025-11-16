@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Basic Lines</title>
+		<link rel="stylesheet" type="text/css" href="./styles/svg_style.css" />
+		<script type="text/javascript" src="./utils/svg_utils.js"></script>
+	</head>
+
+	<body onload="init();">
+		<div id="svgInput">
+			<div class="editable">
+				<pre id="svgSource" contenteditable="true"></pre>
+			</div>
+			<div id="svgOriginal">
+				&lt;svg width="200px" height="200px" viewBox="0 0 200 200"&gt; &lt;!--
+				horizontal line --&gt; &lt;line x1="40" y1="20" x2="80" y2="20"
+				style="stroke: black;"/&gt; &lt;!-- vertical line --&gt; &lt;line
+				x1="0.7cm" y1="1cm" x2="0.7cm" y2="2.0cm" style="stroke: black;"/&gt;
+				&lt;!-- diagonal line --&gt; &lt;line x1="30" y1="30" x2="85" y2="85"
+				style="stroke: black;"/&gt; &lt;/svg&gt;
+			</div>
+			<div id="svgError"></div>
+			<div>
+				<input type="button" value="Refresh" onclick="refresh();" />
+				<input type="button" value="Reset" onclick="reset();" />
+				<input
+					type="checkbox"
+					id="showGrid"
+					onclick="showGrid()"
+					checked="checked"
+				/>
+				Show grid <input type="checkbox" id="svgZoom" onclick="zoom()" /> Zoom
+				<input type="checkbox" id="svgShowError" />
+				<!--Show SVG Errors-->
+			</div>
+		</div>
+		<!-- svgInput-->
+
+		<div id="svgOutput">
+			<svg width="200" height="200" viewBox="0 0 200 200">
+				<g id="svgGrid">
+					<image
+						xlink:href="./styles/pixel_ruler.svg"
+						x="0"
+						y="0"
+						width="200"
+						height="200"
+					/>
+				</g>
+				<g id="svgMarkup" transform="translate(40,40)">></g>
+			</svg>
+		</div>
+
+		<div>
+			<svg
+				width="200px"
+				height="200px"
+				viewBox="0 0 200 200"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<g id="svgGrid">
+					<!-- 以画布为基准绘制图片 -->
+					<image
+						xlink:href="./styles/pixel_ruler.svg"
+						x="0"
+						y="0"
+						width="200"
+						height="200"
+					/>
+				</g>
+				<g id="svgMarkup" transform="translate(40,40)">
+					<!-- 平移绘制的直线，基准点在(40,40) -->
+					<!-- 水平线段 -->
+					<line
+						x1="30"
+						y1="10"
+						x2="80"
+						y2="10"
+						style="stroke-width: 10; stroke: black"
+					/>
+					<!-- 垂直线段 -->
+					<line
+						x1="10"
+						y1="30"
+						x2="20"
+						y2="80"
+						style="stroke-width: 10; stroke: black"
+					/>
+					<!-- 对角线段 -->
+					<line
+						x1="25"
+						y1="25"
+						x2="75"
+						y2="75"
+						style="stroke-width: 10; stroke: black"
+					/>
+				</g>
+			</svg>
+		</div>
+
+		<div>
+			<svg
+				width="200px"
+				height="200px"
+				viewBox="0 0 200 200"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<!-- 红色 -->
+				<line
+					x1="10"
+					y1="10"
+					x2="50"
+					y2="10"
+					style="stroke: red; stroke-width: 5"
+				/>
+
+				<!-- 淡绿色 -->
+				<line
+					x1="10"
+					y1="20"
+					x2="50"
+					y2="20"
+					style="stroke: #9f9; stroke-width: 5"
+				/>
+				<!-- 淡蓝色 -->
+				<line
+					x1="10"
+					y1="30"
+					x2="50"
+					y2="30"
+					style="stroke: #9999ff; stroke-width: 5"
+				/>
+				<!-- 橘色 -->
+				<line
+					x1="10"
+					y1="40"
+					x2="50"
+					y2="40"
+					style="stroke: rgb(255, 128, 64); stroke-width: 5"
+				/>
+				<!-- 深紫色 -->
+				<line
+					x1="10"
+					y1="50"
+					x2="50"
+					y2="50"
+					style="stroke: rgb(60%, 20%, 60%); stroke-width: 5"
+				/>
+			</svg>
+		</div>
+
+		<!-- • rgba()，形式为rgba(red-value, green-value, blue-value, alpha-value)，其中颜色
+值的取值和rgb()函数一样，透明度（alpha）的取值范围是0~1。
+• hsl()，形式为hsl(hue, saturation, lightness)，其中色相值（hue）是整数角度，取
+值是0~360，饱和度（saturation）和明度（lightness）的取值范围为整数0~255或者百
+分比0%~100%。
+• hsla()，色相、饱和度、明度取值与hsl()一样，透明度取值与rgba()一样。
+• transparent，完全透明，等价于rgba (0,0,0,0)。 -->
+
+		<div>
+			<svg
+				width="200px"
+				height="200px"
+				viewBox="0 0 200 200"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<line
+					x1="30"
+					y1="0"
+					x2="30"
+					y2="60"
+					style="stroke: red; stroke-width: 5"
+				/>
+				<line
+					x1="10"
+					y1="10"
+					x2="50"
+					y2="10"
+					style="stroke-opacity: 0.2; stroke: black; stroke-width: 5"
+				/>
+				<line
+					x1="10"
+					y1="20"
+					x2="50"
+					y2="20"
+					style="stroke-opacity: 0.4; stroke: black; stroke-width: 5"
+				/>
+				<line
+					x1="10"
+					y1="30"
+					x2="50"
+					y2="30"
+					style="stroke-opacity: 0.6; stroke: black; stroke-width: 5"
+				/>
+				<line
+					x1="10"
+					y1="40"
+					x2="50"
+					y2="40"
+					style="stroke-opacity: 0.8; stroke: black; stroke-width: 5"
+				/>
+				<line
+					x1="10"
+					y1="50"
+					x2="50"
+					y2="50"
+					style="stroke-opacity: 1; stroke: black; stroke-width: 5"
+				/>
+			</svg>
+		</div>
+
+		<div>
+			<svg
+				width="200px"
+				height="200px"
+				viewBox="0 0 200 200"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<!-- 9个像素的虚线，5个像素的空隙 -->
+				<line
+					x1="10"
+					y1="10"
+					x2="100"
+					y2="10"
+					style="stroke-dasharray: 9, 5; stroke: black; stroke-width: 2"
+				/>
+				<!-- 5个像素的虚线，3个像素的空隙，9个像素的虚线，2个像素的空隙 -->
+				<line
+					x1="10"
+					y1="20"
+					x2="100"
+					y2="20"
+					style="stroke-dasharray: 5, 3, 9, 2; stroke: black; stroke-width: 2"
+				/>
+				<!-- 复制奇数个数，这等价于：9个像素的虚线，3个像素的空隙，
+        5个像素的虚线，9个像素的空隙，3个像素的虚线，5个像素的空隙 -->
+				<line
+					x1="10"
+					y1="30"
+					x2="100"
+					y2="30"
+					style="stroke-dasharray: 9, 3, 5; stroke: black; stroke-width: 2"
+				/>
+			</svg>
+		</div>
+	</body>
+</html>

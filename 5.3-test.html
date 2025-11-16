@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			div {
+				border: solid 2px gray;
+			}
+			svg {
+				background-color: #eeeeee;
+				margin: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<!-- <svg
+				width="240px"
+				height="240px"
+				viewBox="0 0 240 240"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<title>Grouped Drawing</title>
+				<desc>Stick-figure drawings of a house and people</desc>
+				<g id="house" style="fill: none; stroke: black">
+					<desc>House with door</desc>
+					<rect x="6" y="50" width="60" height="60" />
+					<polyline points="6 50, 36 9, 66 50" />
+					<polyline points="36 110, 36 80, 50 80, 50 110" />
+				</g>
+				<g id="man" style="fill: none; stroke: black">
+					<desc>Male human</desc>
+					<circle cx="85" cy="56" r="10" />
+					<line x1="85" y1="66" x2="85" y2="80" />
+					<polyline points="76 104, 85 80, 94 104" />
+					<polyline points="76 70, 85 76, 94 70" />
+				</g>
+				<g id="woman" style="fill: none; stroke: black">
+					<desc>Female human</desc>
+					<circle cx="110" cy="56" r="10" />
+					<polyline points="110 66, 110 80, 100 90, 120 90, 110 80" />
+					<line x1="104" y1="104" x2="108" y2="90" />
+					<line x1="112" y1="90" x2="116" y2="104" />
+					<polyline points="101 70, 110 76, 119 80" />
+				</g>
+				<use xlink:href="#house" x="70" y="100" />
+				<use xlink:href="#woman" x="-80" y="100" />
+				<use xlink:href="#man" x="-30" y="100" />
+			</svg> -->
+			<!-- 为定义在 -->
+			<!-- <g> 元素内的组合或者任意独立图形元素（比如只想定义一次的复杂多边形形状）提供了 -->
+			<!-- 类似复制粘贴的能力 -->
+		</div>
+		<div>
+			<svg
+				width="240px"
+				height="240px"
+				viewBox="0 0 240 240"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<title>Grouped Drawing</title>
+				<desc>Stick-figure drawings of a house and people</desc>
+				<defs>
+					<g id="house" style="stroke: black; fill: inherit">
+						<desc>House with door</desc>
+						<rect x="0" y="41" width="60" height="60" />
+						<polyline points="0 41, 30 0, 60 41" />
+						<polyline points="30 101, 30 71, 44 71, 44 101" />
+					</g>
+					<g id="man" style="fill: none; stroke: black">
+						<desc>Male stick figure</desc>
+						<circle cx="10" cy="10" r="10" />
+						<line x1="10" y1="20" x2="10" y2="44" />
+						<polyline points="1 58, 10 44, 19 58" />
+						<polyline points="1 24, 10 30, 19 24" />
+					</g>
+					<g id="woman" style="fill: none; stroke: black">
+						<desc>Female stick figure</desc>
+						<circle cx="10" cy="10" r="10" />
+						<polyline points="10 20, 10 34, 0 44, 20 44, 10 34" />
+						<line x1="4" y1="58" x2="8" y2="44" />
+						<line x1="12" y1="44" x2="16" y2="58" />
+						<polyline points="1 24, 10 30, 19 24" />
+					</g>
+					<g id="couple">
+						<desc>Male and female stick figures</desc>
+						<use xlink:href="#man" x="0" y="0" />
+						<use xlink:href="#woman" x="25" y="0" />
+					</g>
+				</defs>
+				<!-- 利用组合定义 -->
+				<use href="#house" x="0" y="0" style="fill: #cfc" />
+				<use xlink:href="#couple" x="70" y="40" />
+				<use xlink:href="#house" x="120" y="0" style="fill: #99f" />
+				<use xlink:href="#couple" x="190" y="40" />
+				<use xlink:href="#woman" x="0" y="145" />
+				<use xlink:href="#man" x="25" y="145" />
+				<use xlink:href="#house" x="65" y="105" style="fill: #c00" />
+			</svg>
+		</div>
+        <div>
+            <svg width="310px" height="310px" viewBox="0 0 310 310"
+            xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="154" cy="154" rx="150" ry="120" style="fill: #999999;">
+                <ellipse cx="152" cy="152" rx="150" ry="120" style="fill: #cceeff;">
+                <image xlink:href="kwanghwamun.jpg"
+                x="72" y="92"
+                width="160" height="120"/>
+            </svg>
+        </div>
+	</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			div {
+				border: solid 2px gray;
+			}
+			svg {
+				background-color: #eeeeee;
+				margin: 10px;
+			}
+
+			svg svg {
+				background-color: bisque;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<svg width="200px" height="200px" viewBox="0 0 200 200">
+				<circle cx="25" cy="25" r="25" style="stroke: black; fill: none" />
+			</svg>
+		</div>
+		<div>
+			<svg width="200px" height="200px" viewBox="0 0 200 200">
+				<circle cx="25" cy="25" r="25" style="stroke: black; fill: none" />
+				<rect
+					x="100"
+					y="5"
+					width="30"
+					height="80"
+					style="stroke: blue; fill: none"
+				/>
+			</svg>
+		</div>
+		<div>
+			<svg width="200px" height="200px" viewBox="0 0 200 200">
+				<circle cx="25" cy="25" r="25" style="stroke: black; fill: none" />
+				<rect
+					x="100"
+					y="5"
+					width="30"
+					height="80"
+					style="stroke: blue; fill: none"
+				/>
+				<svg
+					x="100px"
+					y="5px"
+					width="30px"
+					height="80px"
+					viewBox="0 0 50 50"
+					preserveAspectRatio="xMaxYMax meet"
+				>
+					<circle cx="25" cy="25" r="25" style="stroke: black; fill: none" />
+				</svg>
+			</svg>
+		</div>
+	</body>
+</html>
