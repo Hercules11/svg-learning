@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			div {
+				border: solid 2px gray;
+			}
+			svg {
+				background-color: #eeeeee;
+				margin: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<svg
+				width="200px"
+				height="200px"
+				viewBox="0 0 200 200"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<g id="square">
+					<rect
+						x="10"
+						y="10"
+						width="20"
+						height="20"
+						style="fill: none; stroke: black"
+					/>
+				</g>
+				<use xlink:href="#square" transform="scale(2)" />
+			</svg>
+			<!-- 屏幕掌控画布，画布掌控坐标系，坐标系掌控图形对象，如果直接计算修改图形对象，那么计算量和偏差值都是巨大的，从源头入手，快捷方便 -->
+		</div>
+		<div>
+			<svg
+				width="200px"
+				height="200px"
+				viewBox="0 0 200 200"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<g id="square">
+					<rect
+						x="10"
+						y="10"
+						width="20"
+						height="20"
+						style="fill: none; stroke: black"
+					/>
+				</g>
+				<use xlink:href="#square" transform="scale(3, 1.5)" />
+			</svg>
+		</div>
+	</body>
+</html>
